@@ -1,7 +1,7 @@
 ---
 title: "PA1_template"
-date: "Tuesday, October 14, 2014"
 output: html_document
+date: "Tuesday, October 14, 2014"
 ---
 ###Introduction
 
