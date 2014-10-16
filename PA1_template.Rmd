@@ -50,7 +50,7 @@ axis(1, at=a, labels=b)
 axis(2, at=c, labels=d)
 #Order data by interval
 dataord3 <- data[order(data$interval, decreasing=FALSE), ]
- 
+#Time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the #average number of steps taken, averaged across all days  
 plot(dataord3$interval, dataord3$steps, type="l", xlab= "Intervals",
      ylab= "Average Steps", col="blue" , lwd=2, main="Average Number of Steps")
 #Find and print the interval with the maximum number of steps
@@ -71,10 +71,15 @@ z
 
 
 ```{r, echo=TRUE}
+#Devise a strategy for filling in all of the missing values in the dataset
+#Calculate the steps mean by interval(aggmean)
 aggmean <- tapply(dataord3$steps, dataord$interval, mean, na.rm=T)
+#Calculate the mean of steps mean by interval(taggmean)
 taggmean <- mean(aggmean)
+#Replace NA's with taggmean
 dataord3$steps[is.na(dataord3$steps)] <- taggmean
 stepsXdateNA <- aggregate(x=dataord3$steps, by=list(dataord$date), FUN="sum")
+#Calculate and report the mean and median total number of steps taken per day
 mnNA <- mean(stepsXdateNA$x, na.rm=T)
 mnNA
 mdNA <- median(stepsXdateNA$x, na.rm=T)
@@ -83,10 +88,12 @@ aa <- c(1, 23000, 46000)
 bb <- c("1-Oct-2012", "31-Oct-2102", "30-Nov-2012")
 cc <- c(0, 7.5, 15)
 dd <- c("0", "23000", "46000")
+#Make a histogram of the total number of steps taken each day
 hist(stepsXdateNA$x, main = "Total Steps By Day x NA's", xlab="Days", ylab="Steps",
      xaxt="n", yaxt="n", breaks=61)
 axis(1, at=aa, labels=bb)
 axis(2, at=cc, labels=dd)
+#Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis)
 dataord4 <- dataord3
 dataord4$day <- "w"
 dataord4$day <- ifelse(!weekdays(as.Date(dataord4$date)) %in% c("Saturday", "Sunday"),
