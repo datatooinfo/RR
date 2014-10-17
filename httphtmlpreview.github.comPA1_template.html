@@ -58,6 +58,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 <div id="introduction" class="section level3">
 <h3>Introduction</h3>
+<p>It is now possible to collect a large amount of data about personal movement using activity monitoring devices such as a Fitbit, Nike Fuelband, or Jawbone Up. These type of devices are part of the “quantified self” movement - a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. But these data remain under-utilized both because the raw data are hard to obtain and there is a lack of statistical methods and software for processing and interpreting the data.</p>
 <p>This assignment makes use of data from a personal activity monitoring device. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.</p>
 <p>The variables included in this dataset are:</p>
 <pre><code>- steps: Number of steps taking in a 5-minute interval (missing values are coded as NA)
@@ -74,6 +75,11 @@ library(&quot;ggplot2&quot;, lib.loc=&quot;~/R/win-library/3.1&quot;)
 
 #Order data by date
 dataord &lt;- data[order(data$date, decreasing=FALSE), ]
+#Set X and Y axis values
+a &lt;- c(1, 10750, 21500)
+b &lt;- c(&quot;1-Oct-2012&quot;, &quot;31-Oct-2102&quot;, &quot;30-Nov-2012&quot;)
+c &lt;- c(0, 3.5, 7)
+d &lt;- c(&quot;0&quot;, &quot;450&quot;, &quot;900&quot;)
 #Sum steps by day
 stepsXdate &lt;- aggregate(x=dataord$steps, by=list(dataord$date), FUN=&quot;sum&quot;)
 #Order file stepsXdate by date 
@@ -85,12 +91,7 @@ mn</code></pre>
 <pre class="r"><code>md &lt;- median(stepsXdate$x, na.rm=T)
 md</code></pre>
 <pre><code>## [1] 10765</code></pre>
-<pre class="r"><code>#Set X and Y axis values
-a &lt;- c(1, 10750, 21500)
-b &lt;- c(&quot;1-Oct-2012&quot;, &quot;31-Oct-2102&quot;, &quot;30-Nov-2012&quot;)
-c &lt;- c(0, 3.5, 7)
-d &lt;- c(&quot;0&quot;, &quot;450&quot;, &quot;900&quot;)
-#Create a histogram of steps taken per day
+<pre class="r"><code>#Create a histogram of steps taken per day
 hist(stepsXdate$x, main = &quot;Total Steps By Day&quot;, xlab=&quot;Days&quot;, ylab=&quot;Steps&quot;,
      xaxt=&quot;n&quot;, yaxt=&quot;n&quot;, breaks=61)
 axis(1, at=a, labels=b)
@@ -119,19 +120,19 @@ aggmean &lt;- tapply(dataord3$steps, dataord$interval, mean, na.rm=T)
 taggmean &lt;- mean(aggmean)
 #Replace NA's with taggmean
 dataord3$steps[is.na(dataord3$steps)] &lt;- taggmean
-#Calculate and report the mean and median total number of steps taken per day
 stepsXdateNA &lt;- aggregate(x=dataord3$steps, by=list(dataord$date), FUN=&quot;sum&quot;)
+#Calculate and report the mean and median total number of steps taken per day
 mnNA &lt;- mean(stepsXdateNA$x, na.rm=T)
 mnNA</code></pre>
 <pre><code>## [1] 10766</code></pre>
 <pre class="r"><code>mdNA &lt;- median(stepsXdateNA$x, na.rm=T)
 mdNA</code></pre>
 <pre><code>## [1] 10423</code></pre>
-<pre class="r"><code>#Create a histogram of steps taken per day x NA's
-aa &lt;- c(1, 23000, 46000)
+<pre class="r"><code>aa &lt;- c(1, 23000, 46000)
 bb &lt;- c(&quot;1-Oct-2012&quot;, &quot;31-Oct-2102&quot;, &quot;30-Nov-2012&quot;)
 cc &lt;- c(0, 7.5, 15)
 dd &lt;- c(&quot;0&quot;, &quot;23000&quot;, &quot;46000&quot;)
+#Make a histogram of the total number of steps taken each day
 hist(stepsXdateNA$x, main = &quot;Total Steps By Day x NA's&quot;, xlab=&quot;Days&quot;, ylab=&quot;Steps&quot;,
      xaxt=&quot;n&quot;, yaxt=&quot;n&quot;, breaks=61)
 axis(1, at=aa, labels=bb)
